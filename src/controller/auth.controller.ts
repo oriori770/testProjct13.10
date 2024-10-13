@@ -2,7 +2,7 @@ import e, { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import UserModel, {IUser} from "../model/User.model";
 import jsonwebtoken from "jsonwebtoken";
-import { error } from "console";
+import { error } from "console"; //
 
 
 export async function register(req: Request, res: Response): Promise<void> {
