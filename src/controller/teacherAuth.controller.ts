@@ -35,7 +35,7 @@ export async function logInTeacher(req: Request, res: Response): Promise<void> {
       console.log(existingUser);
       
       const token = jsonwebtoken.sign(
-        { teacherId: existingUser._id },
+        { _id: existingUser._id },
         process.env.JWT_SECRET!,
         { expiresIn: "4h" }
       );

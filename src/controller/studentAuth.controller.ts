@@ -21,21 +21,18 @@ export async function logInStudent(req: Request, res: Response): Promise<void> {
    try{
      
      const { email, password } = req.body;
-     console.log(email, password);
      if (!email || !password) {
-       res.status(400).json({ message: "Missing username or password" });
+       res.status(400).json({ message: "Missing email or password" });
        return;
      }
-     const existingUser :IStudent | null  = await studentModel.findOne({ email });
-     if (!existingUser ||!await existingUser.comparePassword(password)) {
-       res.status(401).json({ message: "Incorrect username or password" });
+     const existingStudent :IStudent | null  = await studentModel.findOne({ email });
+     if (!existingStudent ||!await existingStudent.comparePassword(password)) {
+       res.status(401).json({ message: "Incorrect email or password" });
       return;
     }
-    else{
-      console.log(existingUser);
-      
+    else{    
       const token = jsonwebtoken.sign(
-        { userId: existingUser._id },
+        { _id: existingStudent._id },
         process.env.JWT_SECRET!,
         { expiresIn: "4h" }
       );

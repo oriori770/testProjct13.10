@@ -2,6 +2,8 @@ import  { Request, Response } from "express";
 import classTeacherModel,  {IClassTeacher} from "../model/ClassTeacher.model";
 import studentModel, {IStudent} from "../model/Student.model";
 
+interface AuthRequest extends Request {
+    userId?: {_id: string};}
 
 
 export async function addGradeToStudent(req: Request, res: Response): Promise<void> {
@@ -15,4 +17,17 @@ export async function addGradeToStudent(req: Request, res: Response): Promise<vo
       await newStudent.save();
       return;
     }
-    res.status(404).json({ message: "student not found" });}
+    res.status(404).json({ message: "student not found" });
+};
+export async function getAllClassData(req: AuthRequest, res: Response): Promise<void> {
+
+    const id = req.userId?._id;
+    const allData = await studentModel.find({className: id }).select("-hashedPassword -__v -_id");
+    res.status(200).json(allData);
+};
+// export async function getAllClkassData(req: AuthRequest, res: Response): Promise<void> {
+
+//     const id = req.userId?._id;
+//     const allData = await studentModel.find({className: id }).select("-hashedPassword -__v -_id");
+//     res.status(200).json(allData);
+// };

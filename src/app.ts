@@ -17,11 +17,9 @@ app.use(cookieParser());
 
 mongo();
 
-import {addGradeToStudent } from "./controller/teacher.controller"
-app.put("/:studentName", addGradeToStudent);
+
 app.use("/api", mainRouter);
 
-app.use("/", authmiddleware);
 app.get('/', (req, res) => {
   res.json({ message: "Welcome to Express Zero" });
 });

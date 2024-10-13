@@ -11,7 +11,7 @@ export interface IStudent extends Document {
   comparePassword(password:string):Promise<boolean>
 
 }
-interface IGrade {
+export interface IGrade {
   subject: string;
   comment: string;
   grade: number;

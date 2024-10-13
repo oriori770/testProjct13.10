@@ -1,5 +1,8 @@
 import express from "express";
 import {studentAuthRouter, teacherAuthRouter} from "./auth.roting";
+import {teacherRouter} from "./teacher.roting"
+import {studentRouter} from "./student.roting"
+import authenticateToken from "../middleware/auth.middleware"
 const mainRouter = express.Router();
 
 mainRouter.get("/", (req, res) => {
@@ -9,8 +12,9 @@ mainRouter.get("/", (req, res) => {
 mainRouter.use("/student", studentAuthRouter);
 mainRouter.use("/teacher", teacherAuthRouter);
 
-mainRouter.use("/student", studentAuthRouter);
-mainRouter.use("/teacher", teacherAuthRouter);
+mainRouter.use("/", authenticateToken);
+mainRouter.use("/student", studentRouter);
+mainRouter.use("/teacher", teacherRouter);
 
 
 
