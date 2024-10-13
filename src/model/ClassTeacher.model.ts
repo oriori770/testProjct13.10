@@ -6,16 +6,16 @@ export interface IClassTeacher extends Document {
   className: string;
   teacherName: string;
   email: string;
-  students: IStudent[];
+  // students: IStudent[];
   hashedPassword: string;
   comparePassword(password:string):Promise<boolean>
 }
 
 const classTeacherSchema: Schema = new Schema({
   className: { type: String, required: true, unique: true },
-  TeacherName: { type: String, required: true },
+  teacherName: { type: String, required: true },
   email: { type: String, required: true, unique: true },
-  students: [StudentSchema],
+  // students: [StudentSchema],
   hashedPassword: { type: String, required: true },
 });
 

@@ -1,16 +1,19 @@
 import express from "express";
-import {register, logIn} from "../controller/auth.controller"
+import {registerTeacher, logInTeacher} from "../controller/teacherAuth.controller"
+import {logInStudent, registerStudent} from "../controller/studentAuth.controller"
+
 import {tryCatchHandler} from "../middleware/tryCatchHandler.middleware"
-export const studentAuth = express.Router();
+
+export const studentAuthRouter = express.Router();
 
 
-studentAuth.post("/register", tryCatchHandler(register));
-studentAuth.post("/login", tryCatchHandler(logIn))
+studentAuthRouter.post("/register", tryCatchHandler(registerStudent));
+studentAuthRouter.post("/login", tryCatchHandler(logInStudent))
 
-export const teacherAuth = express.Router();
+export const teacherAuthRouter = express.Router();
 
 
-teacherAuth.post("/register", tryCatchHandler(register));
-teacherAuth.post("/login", tryCatchHandler(logIn))
+teacherAuthRouter.post("/register", tryCatchHandler(registerTeacher));
+teacherAuthRouter.post("/login", tryCatchHandler(logInTeacher))
 
     

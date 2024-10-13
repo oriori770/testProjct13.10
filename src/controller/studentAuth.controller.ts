@@ -1,30 +1,32 @@
 import  { Request, Response } from "express";
-import UserModel, {IStudent} from "../model/Student.model";
+import studentModel, {IStudent} from "../model/Student.model";
 import jsonwebtoken from "jsonwebtoken";
+import classTeacherModel from "../model/ClassTeacher.model";
 
 
-export async function register(req: Request, res: Response): Promise<void> {
+export async function registerStudent(req: Request, res: Response): Promise<void> {
 
-    const { userName, hashedPassword } = req.body;
-    const existingUser: IStudent | null = await UserModel.findOne({ studentName: userName });
+    const {studentName, password,email, className } = req.body;
+    const existingUser: IStudent | null = await studentModel.findOne({ studentName });
     if (existingUser) {
       res.status(400).json({ message: "User already exists" });
       return;
     }
-    const user = new UserModel({ userName, hashedPassword });
+    const studentClassId = await classTeacherModel.findOne({ className }).select("_id");
+    const user = new studentModel({ studentName, hashedPassword:password, email, className: studentClassId });
     await user.save();
-    res.status(201).json({ message: "User created successfully" });
+    res.status(201).json({ message: "student created successfully" });
 }
-export async function logIn(req: Request, res: Response): Promise<void> {
+export async function logInStudent(req: Request, res: Response): Promise<void> {
    try{
      
-     const { userName, password } = req.body;
-     console.log(userName, password);
-     if (!userName || !password) {
+     const { email, password } = req.body;
+     console.log(email, password);
+     if (!email || !password) {
        res.status(400).json({ message: "Missing username or password" });
        return;
      }
-     const existingUser :IStudent | null  = await UserModel.findOne({ studentName: userName });
+     const existingUser :IStudent | null  = await studentModel.findOne({ email });
      if (!existingUser ||!await existingUser.comparePassword(password)) {
        res.status(401).json({ message: "Incorrect username or password" });
       return;

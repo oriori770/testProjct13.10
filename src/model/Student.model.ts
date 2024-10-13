@@ -1,5 +1,5 @@
 import mongoose, { Document, Schema, Types } from "mongoose";
-// import classTeacherSchema, {IClassTeacher} from "./ClassTeacher.model"
+import classTeacherSchema, {IClassTeacher} from "./ClassTeacher.model"
 import bcrypt from "bcrypt";
 
 export interface IStudent extends Document {

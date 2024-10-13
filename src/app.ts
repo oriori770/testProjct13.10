@@ -17,6 +17,7 @@ app.use(cookieParser());
 
 mongo();
 app.use("/api", mainRouter);
+
 app.use("/", authmiddleware);
 app.get('/', (req, res) => {
   res.json({ message: "Welcome to Express Zero" });
