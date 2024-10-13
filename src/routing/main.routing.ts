@@ -6,7 +6,8 @@ mainRouter.get("/", (req, res) => {
     res.status(200).json({ message: "Welcome to the Express.js API!" });
 });
 
-mainRouter.use("/", authRouter);
+mainRouter.use("/student", authRouter);
+mainRouter.use("/teacher", authRouter);
 
 
 

@@ -1,14 +1,12 @@
-import e, { Request, Response } from "express";
-import bcrypt from "bcrypt";
-import UserModel, {IUser} from "../model/User.model";
+import  { Request, Response } from "express";
+import UserModel, {IStudent} from "../model/Student.model";
 import jsonwebtoken from "jsonwebtoken";
-import { error } from "console"; //
 
 
 export async function register(req: Request, res: Response): Promise<void> {
 
     const { userName, hashedPassword } = req.body;
-    const existingUser: IUser | null = await UserModel.findOne({ userName });
+    const existingUser: IStudent | null = await UserModel.findOne({ studentName: userName });
     if (existingUser) {
       res.status(400).json({ message: "User already exists" });
       return;
@@ -26,7 +24,7 @@ export async function logIn(req: Request, res: Response): Promise<void> {
        res.status(400).json({ message: "Missing username or password" });
        return;
      }
-     const existingUser :IUser | null  = await UserModel.findOne({ userName });
+     const existingUser :IStudent | null  = await UserModel.findOne({ studentName: userName });
      if (!existingUser ||!await existingUser.comparePassword(password)) {
        res.status(401).json({ message: "Incorrect username or password" });
       return;
