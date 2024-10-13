@@ -1,6 +1,7 @@
 import  { Request, Response } from "express";
 import classTeacherModel,  {IClassTeacher} from "../model/ClassTeacher.model";
 import studentModel, {IStudent} from "../model/Student.model";
+import {GettingMyStudentGrades} from "../dal/student.dal"
 
 interface AuthRequest extends Request {
     userId?: {_id: string};}
@@ -25,9 +26,20 @@ export async function getAllClassData(req: AuthRequest, res: Response): Promise<
     const allData = await studentModel.find({className: id }).select("-hashedPassword -__v -_id");
     res.status(200).json(allData);
 };
-// export async function getAllClkassData(req: AuthRequest, res: Response): Promise<void> {
+export async function getGrdesOfStudent(req: AuthRequest, res: Response): Promise<void> {
 
-//     const id = req.userId?._id;
-//     const allData = await studentModel.find({className: id }).select("-hashedPassword -__v -_id");
-//     res.status(200).json(allData);
-// };
+    const id  = req.userId?._id;
+    if (!id) {
+        res.status(401).json({ message: "Unauthorized" });
+        return;
+    }
+    const studentname = req.params.studentName;
+    console.log(studentname, id);
+    
+    const student = await GettingMyStudentGrades(studentname, id);
+    if (!student) {
+        res.status(404).json({ message: "student not found" });
+        return;
+    }
+    res.status(200).json(student);
+};
