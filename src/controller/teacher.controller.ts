@@ -1,7 +1,7 @@
 import  { Request, Response } from "express";
 import classTeacherModel,  {IClassTeacher} from "../model/ClassTeacher.model";
 import studentModel, {IStudent} from "../model/Student.model";
-import {GettingMyStudentGrades} from "../dal/student.dal"
+import {GettingMyStudentGrades,GetGradeAverageByNameFromDb} from "../dal/teacher.dal"
 
 interface AuthRequest extends Request {
     userId?: {_id: string};}
@@ -43,3 +43,18 @@ export async function getGrdesOfStudent(req: AuthRequest, res: Response): Promis
     }
     res.status(200).json(student);
 };
+export async function GetClassGradeAverage(req: AuthRequest, res: Response): Promise<void> {
+    // const className = req.params.className;
+    const id  = req.userId?._id;
+    if (!id) {
+        res.status(401).json({ message: "Unauthorized" });
+        return;
+    }
+    const classgradeAverage = await GetGradeAverageByNameFromDb(id);
+    if (!classgradeAverage) {
+        res.status(404).json({ message: "Class not found" });
+        return;
+    }
+    res.status(200).json(classgradeAverage);
+};
+
