@@ -9,13 +9,12 @@ export async function GetGradeAverageByNameFromDb(id: string): Promise<any> {
     console.log(id);
         try {
             // שליפת כל הסטודנטים שמשויכים ל-classId
-            const students = await StudentModel.find({ className: id })//.lean();
+            const students = await StudentModel.find({ className: id });
         
             if (students.length === 0) {
-              return null; // אין סטודנטים בכיתה
-            }
+              return null; 
+            };
         
-            // חישוב הממוצע של הציונים עבור כל הסטודנטים בכיתה
             let totalGrades = 0;
             let totalSubjects = 0;
         
