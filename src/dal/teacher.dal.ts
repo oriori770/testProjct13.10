@@ -5,24 +5,34 @@ export async function GettingMyStudentGrades(studentName: string, teacherId: str
     if(student) return student.grades  as IGrade[] 
     else throw new Error("student not found");
 }
-export async function GetGradeAverageByNameFromDb(id: string): Promise<any[]> {
+export async function GetGradeAverageByNameFromDb(id: string): Promise<any> {
     console.log(id);
-    const classgradeAverage = await StudentModel.aggregate([
-        { $match: { className: id } },
-      
-        // { $unwind: "$grades" },
-  
-        {
-          $group: {
-            _id: "$className", 
-            averageGrade: { $avg: "$grades.grade" } 
+        try {
+            // שליפת כל הסטודנטים שמשויכים ל-classId
+            const students = await StudentModel.find({ className: id })//.lean();
+        
+            if (students.length === 0) {
+              return null; // אין סטודנטים בכיתה
+            }
+        
+            // חישוב הממוצע של הציונים עבור כל הסטודנטים בכיתה
+            let totalGrades = 0;
+            let totalSubjects = 0;
+        
+            students.forEach(student => {
+              student.grades.forEach(grade => {
+                totalGrades += grade.grade;
+                totalSubjects += 1;
+              });
+            });
+        
+            const averageGrade = totalGrades / totalSubjects;
+        
+            return averageGrade;
+          } catch (error) {
+            console.error("Error calculating average grade: ", error);
+            return null;
           }
-        },
-        {$group: {_id: "$studentName", average: {$avg: "$grades.grade"}}}
-])
-    
-
-    return classgradeAverage;
 }
 export async function addStudentGradeToDb(studentName: string, subject: string, comment: string, grade: string): Promise<number> {
     return 5;
@@ -35,34 +45,8 @@ export async function changeGradeStudentAtDb(studentName: string, newGrade: stri
 }
 
 
-// async function getAverageGradeByClassId(classId: mongoose.Types.ObjectId): Promise<number | null> {
-//   try {
-//     const result = await Student.aggregate([
-//       // שלב 1: סינון התלמידים לפי ה-className
-//       { $match: { className: classId } },
-      
-//       // שלב 2: "פיצוץ" המערך של הציונים לכל תלמיד
-//       { $unwind: "$grades" },
 
-//       // שלב 3: חישוב ממוצע הציונים לכל הכיתה
-//       {
-//         $group: {
-//           _id: "$className", // קיבוץ לפי הכיתה
-//           averageGrade: { $avg: "$grades.grade" } // חישוב ממוצע של השדה grade
-//         }
-//       }
-//     ]);
 
-//     if (result.length > 0) {
-//       return result[0].averageGrade;
-//     } else {
-//       return null; // אם אין תוצאות
-//     }
-//   } catch (error) {
-//     console.error("Error calculating average grade with aggregation: ", error);
-//     return null;
-//   }
-// }
 
 
 

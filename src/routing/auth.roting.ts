@@ -113,7 +113,7 @@ export const teacherAuthRouter = express.Router();
  *           schema:
  *             type: object
  *             properties:
- *               studentName:
+ *               className:
  *                 type: string
  *                 description: 'שם המשתמש'
  *                 example: 'user123'
@@ -125,7 +125,7 @@ export const teacherAuthRouter = express.Router();
  *                 type: string
  *                 description: 'דואר אלקטרוני'
  *                 example: 'user123@user123'
- *               className:
+ *               teacherName:
  *                 type: string
  *                 description: 'שם הכיתה'
  *                 example: 'hermon'
@@ -153,7 +153,7 @@ export const teacherAuthRouter = express.Router();
  *               email:
  *                 type: string
  *                 description: 'שם המשתמש'
- *                 example: 'user123'
+ *                 example: 'user123@user123'
  *               password:
  *                 type: string
  *                 description: 'סיסמת המשתמש'
