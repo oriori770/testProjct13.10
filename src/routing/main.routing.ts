@@ -9,6 +9,10 @@ mainRouter.get("/", (req, res) => {
 mainRouter.use("/student", studentAuthRouter);
 mainRouter.use("/teacher", teacherAuthRouter);
 
+mainRouter.use("/student", studentAuthRouter);
+mainRouter.use("/teacher", teacherAuthRouter);
+
+
 
 
 export default mainRouter;

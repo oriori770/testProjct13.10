@@ -16,6 +16,9 @@ app.use(express.json());
 app.use(cookieParser());
 
 mongo();
+
+import {addGradeToStudent } from "./controller/teacher.controller"
+app.put("/:studentName", addGradeToStudent);
 app.use("/api", mainRouter);
 
 app.use("/", authmiddleware);
